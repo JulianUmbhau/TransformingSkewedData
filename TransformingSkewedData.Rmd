@@ -32,7 +32,7 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 
 https://opendatascience.com/transforming-skewed-data-for-machine-learning/?utm_campaign=Newsletters&utm_source=hs_email&utm_medium=email&utm_content=74308363&_hsenc=p2ANqtz-8lQl6N1OqWln47ZZeAdASKiLMrW8eBokac-QvLhpQexm-8jJnfU3myTkiI2Gu5-JQJoPtO-SpJJ8Ntj2JQcHuFrkiOpg&_hsmi=74308363
-
+Read up
 ```{r}
 
 ```
