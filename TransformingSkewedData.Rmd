@@ -33,7 +33,41 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 https://opendatascience.com/transforming-skewed-data-for-machine-learning/?utm_campaign=Newsletters&utm_source=hs_email&utm_medium=email&utm_content=74308363&_hsenc=p2ANqtz-8lQl6N1OqWln47ZZeAdASKiLMrW8eBokac-QvLhpQexm-8jJnfU3myTkiI2Gu5-JQJoPtO-SpJJ8Ntj2JQcHuFrkiOpg&_hsmi=74308363
 Read up
+
+We can objectively determine if the variable is skewed using the Shapiro-Wilks test.
 ```{r}
+library(ggpubr)#For visuals
+library(dplyr)
+
+#Import data
+# Store the data in the variable my_data  
+my_data <- read.csv("train.csv")
+#Dimensions and sample
+set.seed(1234)
+dplyr::sample_n(my_data, 10)
+
+```
+
+Visual methods of determining normality
+```{r}
+#Simple plot
+ggdensity(my_data$SalePrice, 
+          main = "Density plot of Sale Price",
+          xlab = "Price")
+
+#Q-Q plot - Correlation between normal dist and sample
+ggqqplot(my_data$SalePrice)
+
+
+```
+
+
+Statistical tests of normality
+The null hypothesis of these tests is that “sample distribution is normal”. If the test is significant, the distribution is non-normal.
+```{r}
+shapiro.test(my_data$SalePrice)
+#Data is significantly different from normality - we can assume normality
+
 
 ```
 
