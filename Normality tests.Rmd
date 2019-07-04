@@ -1,0 +1,62 @@
+---
+title: "Normality Test"
+author: "JJ"
+date: "04/07/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+library(ggpubr)#For visuals
+library(dplyr)
+
+#Import data
+# Store the data in the variable my_data
+my_data <- ToothGrowth
+#Dimensions and sample
+set.seed(1234)
+dplyr::sample_n(my_data, 10)
+
+```
+
+Visual methods of determining normality
+```{r}
+#Simple plot
+ggdensity(my_data$len, 
+          main = "Density plot of tooth length",
+          xlab = "Tooth length")
+
+#Q-Q plot - Correlation between normal dist and sample
+ggqqplot(my_data$len)
+
+
+```
+
+
+Statistical tests of normality
+The null hypothesis of these tests is that “sample distribution is normal”. If the test is significant, the distribution is non-normal.
+```{r}
+shapiro.test(my_data$len)
+#Data is not significantly different from normality - we can assume normality
