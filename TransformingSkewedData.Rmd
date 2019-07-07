@@ -32,12 +32,28 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 
 https://opendatascience.com/transforming-skewed-data-for-machine-learning/?utm_campaign=Newsletters&utm_source=hs_email&utm_medium=email&utm_content=74308363&_hsenc=p2ANqtz-8lQl6N1OqWln47ZZeAdASKiLMrW8eBokac-QvLhpQexm-8jJnfU3myTkiI2Gu5-JQJoPtO-SpJJ8Ntj2JQcHuFrkiOpg&_hsmi=74308363
+
+https://rcompanion.org/handbook/I_12.html
+
+
 Read up
 
 We can objectively determine if the variable is skewed using the Shapiro-Wilks test.
 ```{r}
 library(ggpubr)#For visuals
 library(dplyr)
+
+ipak <- function(pkg){
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE)
+}
+
+# usage
+packages <- c("ggplot2", "dataMaid","ggpubr","dplyr","caret")
+ipak(packages)
+
 
 #Import data
 # Store the data in the variable my_data  
@@ -65,8 +81,49 @@ ggqqplot(my_data$SalePrice)
 Statistical tests of normality
 The null hypothesis of these tests is that “sample distribution is normal”. If the test is significant, the distribution is non-normal.
 ```{r}
-shapiro.test(my_data$SalePrice)
+train_mydata<-as.data.frame(my_data[,"SalePrice"])
+train_mydata<-as.data.frame(my_data[,c("Id","SalePrice")])
+
+shapiro.test(train_mydata$SalePrice)
 #Data is significantly different from normality - we can assume normality
+
+```
+
+We can address skewed variables by transforming them (i.e. applying the same function to each value). Common transformations include square root (sqrt(x)), logarithmic (log(x)), and reciprocal (1/x).
+
+```{r}
+#Sqaure root transformation
+train_mydata$SalePriceTransform<-sqrt(train_mydata$SalePrice)
+#Visual identification
+ggdensity(train_mydata$SalePriceTransform, 
+          main = "Density plot of Sale Price",
+          xlab = "Price")
+
+
+#Cube root transformation
+train_mydata$SalePriceTransform = sign(train_mydata$SalePrice) * abs(train_mydata$SalePrice)^(1/3)   # Avoid complex numbers
+#for some cube roots
+ggdensity(train_mydata$SalePriceTransform, 
+          main = "Density plot of Sale Price",
+          xlab = "Price")
+
+
+#Reciprocal Transformation
+train_mydata$SalePriceTransform = 1/train_mydata$SalePrice
+#Visual identification
+ggdensity(train_mydata$SalePriceTransform, 
+          main = "Density plot of Sale Price",
+          xlab = "Price")
+
+
+
+#Log transformation
+train_mydata$SalePriceTransform= log(train_mydata$SalePrice)
+#for some cube roots
+#Visual identification
+ggdensity(train_mydata$SalePriceTransform, 
+          main = "Density plot of Sale Price",
+          xlab = "Price")
 
 
 ```
